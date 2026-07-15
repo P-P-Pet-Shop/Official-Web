@@ -1,0 +1,105 @@
+---
+import logo from '../assets/100002.png';
+import '../styles/global.css';
+
+const pathname = Astro.url.pathname;
+const currentPath = pathname.replace(/\/$/, "") || "/";
+
+const navLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Gallery', href: '/gallery' },
+  { name: 'Services', href: '/services' },
+  { name: 'Contact', href: '/contact' },
+];
+---
+
+<!-- Updated: Changed 'absolute' to 'fixed' to keep navbar visible while scrolling -->
+<header class="fixed top-0 left-0 w-full z-50 p-4 md:p-6">
+  
+  <nav class="bg-white rounded-full max-w-7xl mx-auto px-6 py-2.5 flex items-center justify-between shadow-md">
+    
+    <a href="/" class="flex items-center gap-3 group shrink-0">
+      <img src={logo.src} alt="P&P Pet Shop Logo" class="w-10 h-10" />
+      <div class="flex items-baseline gap-1.5 text-2xl tracking-tight">
+        <span class="text-[#9b2a26] font-bold">P&P</span>
+        <span class="text-black font-extrabold uppercase">Pet Shop</span>
+      </div>
+    </a>
+
+    <div class="hidden lg:flex items-center justify-center flex-1">
+      <ul class="flex items-center gap-7 text-[15px] font-semibold text-black">
+        {navLinks.map((link) => (
+          <li>
+            <a 
+              href={link.href} 
+              class={`transition-colors duration-200 hover:text-gray-500 ${currentPath === link.href ? "text-gray-900" : ""}`}
+            >
+              {link.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="hidden lg:flex items-center gap-3 shrink-0">
+      <a href="#" class="bg-[#00B14F] text-white text-sm font-bold px-6 py-2.5 rounded-full hover:bg-green-700 transition shadow-sm">
+        Uber Eats
+      </a>
+      <a href="#" class="bg-[#FFC107] text-black text-sm font-bold px-6 py-2.5 rounded-full hover:bg-yellow-500 transition shadow-sm">
+        PickMe Food
+      </a>
+    </div>
+
+    <button id="menu-btn" class="lg:hidden p-2 text-black focus:outline-none" aria-label="Toggle Menu">
+      <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden lg:hidden flex-col bg-white rounded-3xl mt-3 p-5 space-y-4 max-w-7xl mx-auto shadow-lg">
+    {navLinks.map((link) => (
+      <a 
+        href={link.href} 
+        class="text-lg font-bold px-4 text-black hover:text-gray-600"
+      >
+        {link.name}
+      </a>
+    ))}
+    
+    <div class="flex flex-col gap-3 px-4 pt-4 border-t border-gray-100">
+      <a href="#" class="bg-[#00B14F] text-white text-center py-3 rounded-full font-bold">
+        Uber Eats
+      </a>
+      <a href="#" class="bg-[#FFC107] text-black text-center py-3 rounded-full font-bold">
+        PickMe Food
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    if (menuBtn) {
+      menuBtn.addEventListener('click', () => {
+        const isHidden = mobileMenu?.classList.contains('hidden');
+        
+        mobileMenu?.classList.toggle('hidden');
+        mobileMenu?.classList.toggle('flex');
+        
+        if (menuIcon) {
+          if (isHidden) {
+            menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />';
+          } else {
+            menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />';
+          }
+        }
+      });
+    }
+  });
+</script>

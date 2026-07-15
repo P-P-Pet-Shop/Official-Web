@@ -1,0 +1,192 @@
+---
+import Navbar from '../components/navbar.astro';
+import Footer from '../components/footer.astro';
+import galleryCat from '../assets/gallerycat.png';
+
+// 1. Import Curated Covers (as requested)
+import dogsCover from '../assets/covers/dogs-cover.jpg';
+import catsCover from '../assets/covers/cats-cover.jpg';
+import birdsCover from '../assets/covers/birds-cover.jpg';
+import rabbitsCover from '../assets/covers/rabbits-cover.jpg';
+import hamstersCover from '../assets/covers/hamsters-cover.jpg';
+import foodsCover from '../assets/covers/foods-cover.jpg';
+import medicinesCover from '../assets/covers/medicines-cover.jpg';
+import accessoriesCover from '../assets/covers/accessories-cover.jpg';
+
+// 2. Import All Gallery Photos Dynamically
+const allImages = import.meta.glob('../assets/**/*.{jpg,jpeg,png,webp}', { eager: true });
+
+// Helper function to extract images for a specific folder
+const getGalleryFor = (category: string) => {
+  return Object.keys(allImages)
+    .filter((path) => path.includes(`../assets/${category}/`))
+    .map((path) => (allImages[path] as { default: { src: string } }).default.src);
+};
+
+// 3. Define Categories with their specific covers
+const galleryCategories = [
+  { id: 'dogs', name: 'Dogs', cover: dogsCover.src },
+  { id: 'cats', name: 'Cats', cover: catsCover.src },
+  { id: 'birds', name: 'Birds', cover: birdsCover.src },
+  { id: 'rabbits', name: 'Rabbits', cover: rabbitsCover.src },
+  { id: 'hamsters', name: 'Hamsters', cover: hamstersCover.src },
+  { id: 'foods', name: 'Foods', cover: foodsCover.src },
+  { id: 'medicines', name: 'Medicines', cover: medicinesCover.src },
+  { id: 'accessories', name: 'Accessories', cover: accessoriesCover.src },
+];
+
+// 4. Build the gallery data object for the script
+const galleryData = Object.fromEntries(
+  galleryCategories.map(cat => [cat.id, getGalleryFor(cat.id)])
+);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gallery - P&P Pet Shop</title>
+  </head>
+  <body class="bg-white font-sans text-gray-900">
+    <Navbar />
+    <main>
+      <section class="relative w-full h-[500px] flex items-center">
+        <div class="absolute inset-0 -z-10">
+          <img src={galleryCat.src} class="w-full h-full object-cover" alt="Gallery Banner" />
+          <div class="absolute inset-0 bg-black/50"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 text-white">
+          <h1 class="text-6xl font-extrabold mb-4">Our <span class="text-[#C7C338]">Lovely</span> Pets</h1>
+          <p class="text-xl opacity-90">Explore our collection of healthy and adorable pets.</p>
+        </div>
+      </section>
+
+      <section id="gallery-container" data-gallery={JSON.stringify(galleryData)} class="max-w-7xl mx-auto px-6 py-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {galleryCategories.map((cat) => (
+            <div class="group relative overflow-hidden rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500">
+              <img src={cat.cover} class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-110" alt={cat.name} />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
+                <h3 class="text-white font-bold text-lg">{cat.name}</h3>
+                <button class="gallery-trigger mt-3 w-full bg-white/20 backdrop-blur-md text-white py-2 rounded-lg text-xs font-bold hover:bg-white/40 transition-colors" data-category={cat.id}>
+                  View Gallery
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div id="lightbox-modal" class="fixed inset-0 z-[100] bg-black hidden flex-col">
+        <div class="p-6 flex justify-between items-center text-white">
+          <div>
+            
+            <h2 id="lightbox-title" class="text-xl font-bold uppercase">Gallery</h2>
+          </div>
+          <div class="flex items-center gap-6">
+            <span id="lightbox-counter" class="text-sm">1 / 1</span>
+            <button id="lightbox-close" class="hover:text-gray-300">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-1 flex items-center justify-center relative px-4">
+          <button id="lightbox-prev" class="absolute left-4 text-white/50 hover:text-white">
+            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <img id="lightbox-image" src="" class="max-h-[70vh] w-auto object-contain" alt="Gallery item" />
+          <button id="lightbox-next" class="absolute right-4 text-white/50 hover:text-white">
+            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <div id="thumbnail-strip" class="h-24 p-4 flex gap-2 justify-center bg-black/80 overflow-x-auto"></div>
+      </div>
+    </main>
+    <Footer />
+
+    <script>
+      function setupGallery() {
+        const container = document.getElementById('gallery-container');
+        const modal = document.getElementById('lightbox-modal');
+        const img = document.getElementById('lightbox-image') as HTMLImageElement;
+        const counter = document.getElementById('lightbox-counter');
+        const thumbStrip = document.getElementById('thumbnail-strip');
+        const titleEl = document.getElementById('lightbox-title');
+        
+        if (!container || !modal || !thumbStrip) return;
+
+        const galleryData = JSON.parse(container.getAttribute('data-gallery') || '{}');
+        let current = 0;
+        let currentImgs: string[] = [];
+
+        const updateLightbox = () => {
+          if (!currentImgs[current]) return;
+          img.src = currentImgs[current];
+          counter!.textContent = `${current + 1} / ${currentImgs.length}`;
+          
+          document.querySelectorAll('.thumb').forEach((t, i) => {
+            t.classList.toggle('ring-2', i === current);
+            t.classList.toggle('ring-yellow-500', i === current);
+          });
+        };
+
+        document.querySelectorAll('.gallery-trigger').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const catId = (e.currentTarget as HTMLElement).getAttribute('data-category')!;
+            currentImgs = galleryData[catId] || [];
+            
+            if(currentImgs.length > 0) {
+              current = 0;
+              thumbStrip.innerHTML = '';
+              currentImgs.forEach((src, i) => {
+                const thumb = document.createElement('img');
+                thumb.src = src;
+                thumb.className = 'thumb h-full w-20 object-cover cursor-pointer hover:opacity-80 rounded border-2 border-transparent transition-all';
+                thumb.onclick = () => { current = i; updateLightbox(); };
+                thumbStrip.appendChild(thumb);
+              });
+              
+              titleEl!.textContent = catId.toUpperCase();
+              updateLightbox();
+              modal.classList.remove('hidden');
+              document.body.style.overflow = 'hidden'; // Prevent scroll
+            } else {
+              alert(`The ${catId} gallery is currently empty.`);
+            }
+          });
+        });
+
+        const closeGallery = () => {
+          modal.classList.add('hidden');
+          document.body.style.overflow = 'auto';
+        };
+
+        document.getElementById('lightbox-close')?.addEventListener('click', closeGallery);
+        
+        document.getElementById('lightbox-next')?.addEventListener('click', () => {
+          if(currentImgs.length) {
+            current = (current + 1) % currentImgs.length;
+            updateLightbox();
+          }
+        });
+
+        document.getElementById('lightbox-prev')?.addEventListener('click', () => {
+          if(currentImgs.length) {
+            current = (current - 1 + currentImgs.length) % currentImgs.length;
+            updateLightbox();
+          }
+        });
+
+        // Close on background click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeGallery();
+        });
+      }
+
+      setupGallery();
+      document.addEventListener('astro:page-load', setupGallery);
+    </script>
+  </body>
+</html>

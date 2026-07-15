@@ -1,0 +1,39 @@
+---
+import Navbar from '../components/navbar.astro';
+import Footer from '../components/footer.astro';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Lost | P&P Pet Shop</title>
+  </head>
+  <body class="bg-[#F8F7F2] font-sans text-slate-900 min-h-screen flex flex-col selection:bg-[#C7C338] selection:text-white">
+    <Navbar />
+    
+    <main class="flex-grow flex items-center justify-center p-6 relative">
+      <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-[#C7C338]/20 rounded-full blur-[100px]"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-blue-200/30 rounded-full blur-[100px]"></div>
+
+      <div class="relative z-10 text-center bg-white/40 backdrop-blur-xl border border-white/50 p-12 md:p-20 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] max-w-2xl w-full">
+        <div class="inline-block p-4 mb-8 rounded-full bg-[#C7C338]/10 text-[#C7C338]">
+          <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        
+        <h1 class="text-8xl md:text-9xl font-black text-slate-900 tracking-tighter mb-6">404</h1>
+        <h2 class="text-3xl font-bold mb-4">Paws are lost in transit</h2>
+        <p class="text-slate-600 mb-10 text-lg leading-relaxed">
+          The page you're sniffing around for doesn't exist. Let's get you back to our healthy and adorable collections.
+        </p>
+        
+        <a href="/" class="group inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-full font-bold hover:bg-[#C7C338] transition-all duration-300 transform hover:scale-105 active:scale-95">
+          Take Me Home
+          <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </main>
+    
+    <Footer />
+  </body>
+</html>

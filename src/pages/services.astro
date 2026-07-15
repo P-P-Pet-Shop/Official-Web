@@ -1,0 +1,206 @@
+---
+import Navbar from '../components/navbar.astro';
+import Footer from '../components/footer.astro';
+import servicesHero from '../assets/aboutpic.png'; // Reusing your hero image
+import foodDogs from '../assets/fooddogs.png';
+import illdog from '../assets/illdog.png';
+
+import puppy from '../assets/puppy.jpg';
+import kittenImg from '../assets/kitten.jpg';
+import bird2Img from '../assets/bird2.jpg'; // The mockup shows a puppy here, but you'll want a bird image!
+import hamsterImg from '../assets/hamster.jpg';
+
+import g1 from '../assets/g1.jpg';
+import g5 from '../assets/g5.jpg';
+import g3 from '../assets/g3.jpg';
+import g6 from '../assets/g6.jpg';
+
+const healthFeatures = ["Health-checked", "Vaccinated", "Socialized for home environments"];
+const foodFeatures = ["Top local and international brands", "Food for all life stages", "Delivered via Uber eats & PickMe Foods"];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Services - P&P Pet Shop</title>
+  </head>
+  <body class="bg-white font-sans antialiased text-gray-900 overflow-x-hidden">
+    <Navbar />
+
+    <main class="max-w-7xl mx-auto px-6 pt-24 pb-24">
+      <!-- Services Hero -->
+      <section class="relative flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
+        <div class="flex-1 space-y-4 z-10">
+          <p class="text-[#D9782D] font-bold uppercase tracking-widest text-sm">What we offer</p>
+          <h1 class="text-6xl font-extrabold text-black">Services</h1>
+          <p class="text-xl text-gray-600 font-medium">Everything your pet needs - all in one place.</p>
+        </div>
+        <div class="flex-1 w-full relative flex justify-end">
+          <div class="absolute -top-12 -bottom-12 -right-10 w-[130%] bg-[#F4F7E6] rounded-tl-[190px] rounded-bl-[100px] -z-10"></div>
+          <img src={servicesHero.src} class="w-full max-w-lg object-contain" />
+        </div>
+      </section>
+
+      <!-- Order Pet Foods Online Section -->
+<section class="max-w-7xl mx-auto px-6 py-20">
+  <div class="bg-[#F9F7E8] rounded-[2.5rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 border border-gray-100 shadow-sm">
+    
+    <!-- Left Column: Content -->
+    <div class="flex-1 space-y-6">
+      <div class="flex items-center gap-4">
+        <div class="bg-[#D9C967] p-3 rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-black">Order Pet Foods Online</h2>
+      </div>
+      
+      <p class="text-gray-600 font-medium leading-relaxed max-w-md">
+        No time to visit? Get your pet's favourite food delivered straight to your door! <br/>
+        <span class="font-bold text-gray-800">Order Via Uber Eats or PickMe Foods.</span>
+      </p>
+    </div>
+
+    <!-- Center Column: Image -->
+    <div class="flex-shrink-0 w-full md:w-auto flex justify-center">
+      <img src={foodDogs.src} alt="Pet food delivery" class="h-48 md:h-64 object-contain" />
+    </div>
+
+    <!-- Right Column: Buttons -->
+    <div class="flex flex-col gap-4 w-full md:w-auto">
+      <a href="#" class="bg-[#00B14F] text-white text-center font-bold px-8 py-4 rounded-xl hover:bg-green-700 transition">
+        Uber Eats
+      </a>
+      <a href="#" class="bg-[#FFC107] text-black text-center font-bold px-8 py-4 rounded-xl hover:bg-yellow-500 transition">
+        PickMe Food
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Pet Sales & Adoption Section -->
+<section class="max-w-7xl mx-auto px-6 py-16">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="bg-[#F2F6DC] p-3 rounded-full"><span class="text-2xl">🐾</span></div>
+    <h2 class="text-3xl font-extrabold text-black">Pet Sales & Adoption</h2>
+  </div>
+  <p class="text-gray-600 mb-8 max-w-2xl">Looking for a new family member? We have a variety of Puppies, Kittens, birds, Rabbits and Hamsters. Ready to be adopted into loving homes.</p>
+  
+  <div class="flex flex-wrap gap-6 mb-8">
+    {healthFeatures.map(feat => (
+      <div class="flex items-center gap-2 text-[#D9782D] font-medium">
+        <span>✓</span> {feat}
+      </div>
+    ))}
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {[1].map(() => (
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={puppy.src} alt="Puppy" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Puppies</span>
+      </div>
+
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={kittenImg.src} alt="g3" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Kittens</span>
+      </div>
+
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={hamsterImg.src} alt="Puppy" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Harmster</span>
+      </div>
+
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={bird2Img.src} alt="Puppy" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Birds</span>
+      </div>
+
+    ))}
+  </div>
+</section>
+
+<!-- Pet Food & Suppliers Section -->
+<section class="max-w-7xl mx-auto px-6 py-16">
+  <div class="flex items-center gap-4 mb-6">
+    <div class="bg-[#F2F6DC] p-3 rounded-full"><span class="text-2xl">🛍️</span></div>
+    <h2 class="text-3xl font-extrabold text-black">Pet Food & Suppliers</h2>
+  </div>
+  <p class="text-gray-600 mb-8">We stock premium quality food, treats, toys, grooming essentials and accessories for all types of pets.</p>
+  
+  <div class="flex flex-wrap gap-6 mb-8">
+    {foodFeatures.map(feat => (
+      <div class="flex items-center gap-2 text-[#D9782D] font-medium">
+        <span>✓</span> {feat}
+      </div>
+    ))}
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {[1].map(() => (
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={g1.src} alt="Pet Product" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Pet food</span>
+      </div>
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={g3.src} alt="Pet Product" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Pet food</span>
+      </div>
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={g5.src} alt="Pet Product" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Pet Toys</span>
+      </div>
+      <div class="relative rounded-3xl overflow-hidden shadow-sm">
+        <img src={g6.src} alt="Pet Product" class="w-full aspect-[4/3] object-cover" />
+        <span class="absolute top-3 right-3 bg-white/90 text-xs font-bold px-3 py-1 rounded-full">Cleaners</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+
+
+<!-- Vet Referrals & Pet Care Advice Section -->
+<section class="max-w-7xl mx-auto px-6 py-16">
+  <div class="bg-[#F9F7E8] rounded-[2.5rem] flex flex-col md:flex-row overflow-hidden shadow-sm border border-gray-100">
+    
+    <!-- Left: Text Content -->
+    <div class="p-8 md:p-12 lg:p-16 flex-1 flex flex-col justify-center">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-black mb-6">Vet Referrals & Pet Care Advice</h2>
+      
+      <p class="text-gray-700 font-medium leading-relaxed mb-8 max-w-lg">
+        Not sure what your pet needs? Our experienced team is here to help with basic care guidance and referrals to trusted local veterinarians.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-bold text-gray-900 mb-1">Advice on feeding</h4>
+          <p class="text-gray-600 text-sm">Traning & health</p>
+        </div>
+        <div>
+          <h4 class="font-bold text-gray-900 mb-1">Help finding the right</h4>
+          <p class="text-gray-600 text-sm">vet near you</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Image -->
+    <div class="w-full md:w-1/2 lg:w-2/5">
+      <img 
+        src={illdog.src} 
+        alt="Puppy with veterinarian" 
+        class="w-full h-full object-cover min-h-[300px]" 
+      />
+    </div>
+
+  </div>
+</section>
+
+    </main>
+
+    <Footer />
+  </body>
+</html>
