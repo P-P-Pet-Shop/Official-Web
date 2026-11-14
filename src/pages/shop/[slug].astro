@@ -1,0 +1,471 @@
+---
+import Navbar from '../../components/navbar.astro';
+import Footer from '../../components/footer.astro';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  const products = [
+    {
+      id: 1,
+      slug: "drools-focus-adult-super-premium-dog-food",
+      name: "Drools Focus Adult Super Premium Dog Food",
+      category: "foods",
+      category_name: "Pet Foods",
+      price: 6850,
+      original_price: 7200,
+      sku: "PNP-FOOD-1001",
+      image: "/src/assets/foods/10003.jpg",
+      gallery: ["/src/assets/foods/10003.jpg", "/src/assets/foods/10006.jpg"],
+      short_desc: "Super premium adult dog food with real chicken and wholesome egg for optimal muscle development and vibrant energy.",
+      desc: "Drools Focus Adult Super Premium Dog Food is meticulously formulated with pure chicken and essential Omega 3 & 6 fatty acids to maintain vibrant coat health, strong joints and high stamina. Ideal for medium and large breed adult dogs in tropical Sri Lankan climates. Free from artificial fillers, corn, and soy.",
+      variants: [
+        { id: 101, name: "1.2 kg Pack", value: "1.2kg", add_price: 0, stock: 25 },
+        { id: 102, name: "4 kg Bag", value: "4kg", add_price: 6500, stock: 15 },
+        { id: 103, name: "12 kg Value Bag", value: "12kg", add_price: 18500, stock: 8 },
+      ],
+      stock: 48
+    },
+    {
+      id: 2,
+      slug: "royal-canin-mini-adult-wet-gravy-pouch",
+      name: "Royal Canin Mini Adult Wet Gravy Pouch",
+      category: "foods",
+      category_name: "Pet Foods",
+      price: 650,
+      original_price: null,
+      sku: "PNP-FOOD-1002",
+      image: "/src/assets/foods/10006.jpg",
+      gallery: ["/src/assets/foods/10006.jpg"],
+      short_desc: "Specially crafted wet gravy food for small breed adult dogs up to 10kg.",
+      desc: "Supports digestive health and maintains ideal weight for active small breed dogs. Highly palatable chunks in rich gravy that entice even the finickiest eaters.",
+      variants: [
+        { id: 201, name: "Single 85g Pouch", value: "85g", add_price: 0, stock: 50 },
+        { id: 202, name: "Pack of 12 Pouches", value: "12-Pack", add_price: 6500, stock: 12 },
+      ],
+      stock: 62
+    },
+    {
+      id: 3,
+      slug: "me-o-tuna-adult-cat-dry-food",
+      name: "Me-O Tuna Adult Cat Dry Food",
+      category: "foods",
+      category_name: "Pet Foods",
+      price: 2950,
+      original_price: 3200,
+      sku: "PNP-FOOD-1003",
+      image: "/src/assets/foods/10010.jpg",
+      gallery: ["/src/assets/foods/10010.jpg"],
+      short_desc: "Complete and balanced nutrition with delicious ocean tuna flavor.",
+      desc: "Me-O Tuna Cat Food is fortified with taurine for sharp vision, vitamin C to boost immune health, and low-sodium formulation to protect kidney wellness.",
+      variants: [
+        { id: 301, name: "1.1 kg Bag", value: "1.1kg", add_price: 0, stock: 30 },
+        { id: 302, name: "3 kg Economy Bag", value: "3kg", add_price: 4500, stock: 18 },
+      ],
+      stock: 48
+    },
+    {
+      id: 4,
+      slug: "bayer-bolfo-anti-tick-and-flea-powder",
+      name: "Bayer Bolfo Anti-Tick & Flea Powder",
+      category: "medicines",
+      category_name: "Medicines & Care",
+      price: 1350,
+      original_price: 1450,
+      sku: "PNP-MED-2001",
+      image: "/src/assets/medicines/10003.jpg",
+      gallery: ["/src/assets/medicines/10003.jpg"],
+      short_desc: "Fast-acting veterinary powder to eradicate ticks, fleas, and lice on dogs and cats.",
+      desc: "Propoxur 1% anti-parasitic powder safe for routine dusting. Helps prevent tick-borne diseases and eliminates skin irritation caused by external parasites.",
+      variants: [
+        { id: 401, name: "100g Dispenser Bottle", value: "100g", add_price: 0, stock: 40 },
+      ],
+      stock: 40
+    },
+    {
+      id: 5,
+      slug: "pet-tabs-plus-daily-vitamin-mineral-supplement",
+      name: "Pet-Tabs Plus Daily Vitamin & Mineral Supplement",
+      category: "medicines",
+      category_name: "Medicines & Care",
+      price: 4800,
+      original_price: null,
+      sku: "PNP-MED-2002",
+      image: "/src/assets/medicines/10007.jpg",
+      gallery: ["/src/assets/medicines/10007.jpg"],
+      short_desc: "Comprehensive daily multivitamin chewables for active and senior dogs.",
+      desc: "Rich in Calcium, Zinc, Vitamin A, B-Complex, and Iron. Promotes healthy joints, high vitality, and resilient immune defense for dogs in all life stages.",
+      variants: [
+        { id: 501, name: "60 Chewable Tablets", value: "60-Tabs", add_price: 0, stock: 20 },
+        { id: 502, name: "180 Chewable Tablets", value: "180-Tabs", add_price: 7500, stock: 10 },
+      ],
+      stock: 30
+    },
+    {
+      id: 6,
+      slug: "heavy-duty-reflective-comfort-dog-harness",
+      name: "Heavy-Duty Reflective Comfort Dog Harness",
+      category: "accessories",
+      category_name: "Accessories & Toys",
+      price: 3400,
+      original_price: 3800,
+      sku: "PNP-ACC-3001",
+      image: "/src/assets/accessories/10003.jpg",
+      gallery: ["/src/assets/accessories/10003.jpg"],
+      short_desc: "No-pull breathable mesh harness with 3M reflective safety stitching.",
+      desc: "Padded ergonomic design that distributes pulling pressure evenly across chest and shoulders without choking. Features sturdy dual D-rings and top safety handle.",
+      variants: [
+        { id: 601, name: "Small (Chest 45-55cm)", value: "S", add_price: 0, stock: 15 },
+        { id: 602, name: "Medium (Chest 55-70cm)", value: "M", add_price: 400, stock: 20 },
+        { id: 603, name: "Large (Chest 70-90cm)", value: "L", add_price: 800, stock: 15 },
+      ],
+      stock: 50
+    },
+    {
+      id: 7,
+      slug: "non-slip-stainless-steel-pet-food-water-bowl",
+      name: "Non-Slip Stainless Steel Pet Food & Water Bowl",
+      category: "accessories",
+      category_name: "Accessories & Toys",
+      price: 1200,
+      original_price: null,
+      sku: "PNP-ACC-3002",
+      image: "/src/assets/accessories/10008.jpg",
+      gallery: ["/src/assets/accessories/10008.jpg"],
+      short_desc: "Rust-proof hygienic stainless steel bowl with non-slip silicone base.",
+      desc: "Dishwasher safe, durable, and odor-resistant food bowl engineered to prevent tipping and sliding during vigorous meal times.",
+      variants: [
+        { id: 701, name: "Small 400ml", value: "400ml", add_price: 0, stock: 35 },
+        { id: 702, name: "Medium 850ml", value: "850ml", add_price: 500, stock: 30 },
+      ],
+      stock: 65
+    },
+    {
+      id: 8,
+      slug: "vitakraft-australian-budgie-parrot-seed-mix",
+      name: "Vitakraft Australian Budgie & Parrot Seed Mix",
+      category: "birds",
+      category_name: "Birds & Parrots",
+      price: 2350,
+      original_price: 2600,
+      sku: "PNP-BIRD-4001",
+      image: "/src/assets/birds/10003.jpg",
+      gallery: ["/src/assets/birds/10003.jpg"],
+      short_desc: "Nutritionally balanced seed and grain blend with eucalyptus leaves.",
+      desc: "Species-appropriate seed mixture enriched with essential vitamins, minerals, and iodine pearls to support healthy thyroid function and brilliant feathering.",
+      variants: [
+        { id: 801, name: "1 kg Box", value: "1kg", add_price: 0, stock: 25 },
+      ],
+      stock: 25
+    },
+    {
+      id: 9,
+      slug: "crispy-muesli-complete-hamster-guinea-pig-food",
+      name: "Crispy Muesli Complete Hamster & Guinea Pig Food",
+      category: "small-pets",
+      category_name: "Small Pets",
+      price: 1950,
+      original_price: 2100,
+      sku: "PNP-HAM-5001",
+      image: "/src/assets/hamsters/10003.jpg",
+      gallery: ["/src/assets/hamsters/10003.jpg"],
+      short_desc: "Tasty fiber-rich muesli mixture with puffed grains and vegetables.",
+      desc: "High quality muesli blend containing all vital nutrients, cereals, and vegetables needed for digestive health and tooth wear in hamsters, mice, and gerbils.",
+      variants: [
+        { id: 901, name: "1 kg Bag", value: "1kg", add_price: 0, stock: 20 },
+        { id: 902, name: "2.5 kg Bag", value: "2.5kg", add_price: 2400, stock: 10 },
+      ],
+      stock: 30
+    }
+  ];
+
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{product.name} - P&P Pet Shop</title>
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <Navbar />
+
+    <main class="flex-1 max-w-7xl mx-auto px-6 pt-28 pb-20 w-full">
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-2 text-xs text-gray-500 mb-8 overflow-x-auto whitespace-nowrap">
+        <a href="/" class="hover:text-black">Home</a>
+        <span>/</span>
+        <a href="/shop" class="hover:text-black">Shop</a>
+        <span>/</span>
+        <a href={`/shop?category=${product.category}`} class="hover:text-black">{product.category_name}</a>
+        <span>/</span>
+        <span class="text-gray-900 font-semibold">{product.name}</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-[2.5rem] p-6 md:p-12 shadow-sm border border-gray-100">
+        <!-- Gallery Column -->
+        <div class="space-y-4">
+          <div class="aspect-square bg-gray-50 rounded-3xl overflow-hidden border border-gray-100">
+            <img 
+              id="main-product-img"
+              src={product.image} 
+              alt={product.name} 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          {product.gallery.length > 1 && (
+            <div class="flex gap-3">
+              {product.gallery.map((thumb: string) => (
+                <button class="thumb-btn w-20 h-20 rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#D9782D] transition focus:outline-none">
+                  <img src={thumb} alt="Thumbnail" class="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- Details Column -->
+        <div class="flex flex-col justify-between">
+          <div class="space-y-6">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="bg-orange-50 text-[#D9782D] text-xs font-bold px-3 py-1 rounded-full">
+                  {product.category_name}
+                </span>
+                <span class="text-xs text-gray-400 font-mono">
+                  SKU: <span id="display-sku">{product.sku}</span>
+                </span>
+              </div>
+              <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+                {product.name}
+              </h1>
+            </div>
+
+            <!-- Price -->
+            <div class="bg-gray-50 p-4 rounded-2xl inline-block w-full">
+              <span class="text-xs text-gray-400 font-medium block">Price (LKR)</span>
+              <div class="flex items-baseline gap-3">
+                <span id="display-price" class="text-3xl font-black text-gray-900" data-base-price={product.price}>
+                  Rs. {product.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </span>
+                {product.original_price && (
+                  <span class="text-base text-gray-400 line-through">
+                    Rs. {product.original_price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <p class="text-gray-600 text-sm leading-relaxed">
+              {product.short_desc}
+            </p>
+
+            <!-- Variants Selector -->
+            {product.variants && product.variants.length > 0 && (
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
+                  Select Package / Size:
+                </label>
+                <div class="flex flex-wrap gap-2.5" id="variant-group">
+                  {product.variants.map((v: any, index: number) => (
+                    <button 
+                      type="button"
+                      class={`variant-btn px-4 py-2.5 rounded-xl text-xs font-bold border transition ${index === 0 ? 'border-[#D9782D] bg-orange-50 text-[#D9782D]' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}
+                      data-variant-id={v.id}
+                      data-variant-name={v.name}
+                      data-add-price={v.add_price}
+                      data-stock={v.stock}
+                    >
+                      {v.name} {v.add_price > 0 ? `(+Rs. ${v.add_price.toLocaleString()})` : ''}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <!-- Stock Availability Badge -->
+            <div class="flex items-center gap-2 text-xs font-semibold text-green-700">
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+              <span id="stock-status-text">In Stock ({product.stock} units available at Mount Lavinia store)</span>
+            </div>
+
+            <!-- Quantity & Add to Cart -->
+            <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center gap-4">
+              <!-- Quantity Stepper -->
+              <div class="flex items-center border border-gray-200 rounded-2xl p-1 bg-gray-50 w-full sm:w-auto justify-between">
+                <button id="qty-minus" class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-white rounded-xl font-bold transition">
+                  -
+                </button>
+                <span id="qty-display" class="w-12 text-center text-sm font-black">1</span>
+                <button id="qty-plus" class="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-white rounded-xl font-bold transition">
+                  +
+                </button>
+              </div>
+
+              <!-- Add to Cart CTA -->
+              <button 
+                id="add-cart-cta"
+                class="w-full sm:flex-1 bg-[#D9782D] hover:bg-[#b86120] text-white font-bold py-3.5 px-8 rounded-2xl transition shadow-sm active:scale-95 flex items-center justify-center gap-2"
+                data-id={product.id}
+                data-name={product.name}
+                data-sku={product.sku}
+                data-slug={product.slug}
+                data-image={product.image}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                </svg>
+                Add to Shopping Cart
+              </button>
+            </div>
+          </div>
+
+          <!-- Assurances -->
+          <div class="mt-8 pt-6 border-t border-gray-100 grid grid-cols-2 gap-4 text-xs text-gray-500">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>100% Genuine Guaranteed</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#D9782D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span>Fast Island-wide Dispatch</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extended Description -->
+      <div class="mt-12 bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-100">
+        <h2 class="text-2xl font-bold mb-4">Product Details & Feeding Instructions</h2>
+        <div class="text-gray-600 text-sm leading-relaxed space-y-4 max-w-4xl">
+          <p>{product.desc}</p>
+          <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 mt-6">
+            <h3 class="font-bold text-gray-900 mb-2">Delivery & Payment Options:</h3>
+            <ul class="list-disc list-inside space-y-1 text-gray-600">
+              <li>Cash on Delivery (COD) available across Sri Lanka.</li>
+              <li>Bank Transfer option with immediate order confirmation.</li>
+              <li>Estimated delivery in Colombo & Suburbs: 24 to 48 hours.</li>
+              <li>Outstation deliveries: 2 to 4 business days.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="cart-toast" class="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 transform translate-y-24 transition-transform duration-300 z-50">
+      <div class="bg-green-500 rounded-full p-1 text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div>
+        <span class="font-bold text-xs block">Added to Cart</span>
+        <span id="toast-msg" class="text-[11px] text-gray-300">Added to your order.</span>
+      </div>
+      <a href="/cart" class="ml-2 text-xs font-bold text-[#D9782D] hover:underline">View Cart</a>
+    </div>
+
+    <Footer />
+  </body>
+</html>
+
+<script>
+  import { addToCart } from '../../scripts/cart';
+
+  let currentQuantity = 1;
+  let selectedVariantId: number | null = null;
+  let selectedVariantName: string | null = null;
+  let selectedVariantAddPrice = 0;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const priceDisplay = document.getElementById('display-price');
+    const basePrice = parseFloat(priceDisplay?.dataset.basePrice || '0');
+
+    // Quantity Stepper
+    const qtyDisplay = document.getElementById('qty-display');
+    const minusBtn = document.getElementById('qty-minus');
+    const plusBtn = document.getElementById('qty-plus');
+
+    minusBtn?.addEventListener('click', () => {
+      if (currentQuantity > 1) {
+        currentQuantity--;
+        if (qtyDisplay) qtyDisplay.textContent = String(currentQuantity);
+      }
+    });
+
+    plusBtn?.addEventListener('click', () => {
+      currentQuantity++;
+      if (qtyDisplay) qtyDisplay.textContent = String(currentQuantity);
+    });
+
+    // Variant Selection
+    const variantBtns = document.querySelectorAll('.variant-btn');
+    if (variantBtns.length > 0) {
+      const firstBtn = variantBtns[0] as HTMLElement;
+      selectedVariantId = parseInt(firstBtn.dataset.variantId || '0', 10);
+      selectedVariantName = firstBtn.dataset.variantName || null;
+      selectedVariantAddPrice = parseFloat(firstBtn.dataset.addPrice || '0');
+
+      variantBtns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          const target = e.currentTarget as HTMLElement;
+          variantBtns.forEach(b => {
+            b.classList.remove('border-[#D9782D]', 'bg-orange-50', 'text-[#D9782D]');
+            b.classList.add('border-gray-200', 'text-gray-700');
+          });
+          target.classList.remove('border-gray-200', 'text-gray-700');
+          target.classList.add('border-[#D9782D]', 'bg-orange-50', 'text-[#D9782D]');
+
+          selectedVariantId = parseInt(target.dataset.variantId || '0', 10);
+          selectedVariantName = target.dataset.variantName || null;
+          selectedVariantAddPrice = parseFloat(target.dataset.addPrice || '0');
+
+          // Update price display
+          const finalUnitPrice = basePrice + selectedVariantAddPrice;
+          if (priceDisplay) {
+            priceDisplay.textContent = `Rs. ${finalUnitPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+          }
+        });
+      });
+    }
+
+    // Add to Cart Action
+    const addBtn = document.getElementById('add-cart-cta');
+    addBtn?.addEventListener('click', (e) => {
+      const target = e.currentTarget as HTMLElement;
+      const id = parseInt(target.dataset.id || '0', 10);
+      const name = target.dataset.name || '';
+      const sku = target.dataset.sku || '';
+      const slug = target.dataset.slug || '';
+      const image = target.dataset.image || '';
+      const unitPrice = basePrice + selectedVariantAddPrice;
+
+      addToCart({
+        productId: id,
+        variantId: selectedVariantId,
+        variantName: selectedVariantName,
+        name,
+        price: unitPrice,
+        sku,
+        slug,
+        image,
+        quantity: currentQuantity
+      });
+
+      // Show toast
+      const toast = document.getElementById('cart-toast');
+      const toastMsg = document.getElementById('toast-msg');
+      if (toast && toastMsg) {
+        toastMsg.textContent = `${name} (${currentQuantity}) added to your shopping cart.`;
+        toast.classList.remove('translate-y-24');
+        setTimeout(() => toast.classList.add('translate-y-24'), 3000);
+      }
+    });
+  });
+</script>
+

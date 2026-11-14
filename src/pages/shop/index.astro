@@ -1,0 +1,447 @@
+---
+import Navbar from '../../components/navbar.astro';
+import Footer from '../../components/footer.astro';
+import '../../styles/global.css';
+
+// Initial curated catalogue items matching our database seeder
+const initialProducts = [
+  {
+    id: 1,
+    name: "Drools Focus Adult Super Premium Dog Food",
+    slug: "drools-focus-adult-super-premium-dog-food",
+    category: "foods",
+    category_name: "Pet Foods",
+    price: 6850,
+    original_price: 7200,
+    image: "/src/assets/foods/10003.jpg",
+    sku: "PNP-FOOD-1001",
+    short_desc: "Super premium adult dog food with real chicken and wholesome egg.",
+    is_promotional: true,
+    is_featured: true
+  },
+  {
+    id: 2,
+    name: "Royal Canin Mini Adult Wet Gravy Pouch",
+    slug: "royal-canin-mini-adult-wet-gravy-pouch",
+    category: "foods",
+    category_name: "Pet Foods",
+    price: 650,
+    original_price: null,
+    image: "/src/assets/foods/10006.jpg",
+    sku: "PNP-FOOD-1002",
+    short_desc: "Specially crafted wet gravy food for small breed adult dogs up to 10kg.",
+    is_promotional: false,
+    is_featured: true
+  },
+  {
+    id: 3,
+    name: "Me-O Tuna Adult Cat Dry Food",
+    slug: "me-o-tuna-adult-cat-dry-food",
+    category: "foods",
+    category_name: "Pet Foods",
+    price: 2950,
+    original_price: 3200,
+    image: "/src/assets/foods/10010.jpg",
+    sku: "PNP-FOOD-1003",
+    short_desc: "Complete and balanced nutrition with delicious ocean tuna flavor.",
+    is_promotional: true,
+    is_featured: true
+  },
+  {
+    id: 4,
+    name: "Bayer Bolfo Anti-Tick & Flea Powder",
+    slug: "bayer-bolfo-anti-tick-and-flea-powder",
+    category: "medicines",
+    category_name: "Medicines & Care",
+    price: 1350,
+    original_price: 1450,
+    image: "/src/assets/medicines/10003.jpg",
+    sku: "PNP-MED-2001",
+    short_desc: "Fast-acting veterinary powder to eradicate ticks, fleas, and lice.",
+    is_promotional: false,
+    is_featured: false
+  },
+  {
+    id: 5,
+    name: "Pet-Tabs Plus Daily Vitamin & Mineral Supplement",
+    slug: "pet-tabs-plus-daily-vitamin-mineral-supplement",
+    category: "medicines",
+    category_name: "Medicines & Care",
+    price: 4800,
+    original_price: null,
+    image: "/src/assets/medicines/10007.jpg",
+    sku: "PNP-MED-2002",
+    short_desc: "Comprehensive daily multivitamin chewables for active and senior dogs.",
+    is_promotional: false,
+    is_featured: true
+  },
+  {
+    id: 6,
+    name: "Heavy-Duty Reflective Comfort Dog Harness",
+    slug: "heavy-duty-reflective-comfort-dog-harness",
+    category: "accessories",
+    category_name: "Accessories & Toys",
+    price: 3400,
+    original_price: 3800,
+    image: "/src/assets/accessories/10003.jpg",
+    sku: "PNP-ACC-3001",
+    short_desc: "No-pull breathable mesh harness with 3M reflective safety stitching.",
+    is_promotional: true,
+    is_featured: true
+  },
+  {
+    id: 7,
+    name: "Non-Slip Stainless Steel Pet Food & Water Bowl",
+    slug: "non-slip-stainless-steel-pet-food-water-bowl",
+    category: "accessories",
+    category_name: "Accessories & Toys",
+    price: 1200,
+    original_price: null,
+    image: "/src/assets/accessories/10008.jpg",
+    sku: "PNP-ACC-3002",
+    short_desc: "Rust-proof hygienic stainless steel bowl with non-slip silicone base.",
+    is_promotional: false,
+    is_featured: false
+  },
+  {
+    id: 8,
+    name: "Vitakraft Australian Budgie & Parrot Seed Mix",
+    slug: "vitakraft-australian-budgie-parrot-seed-mix",
+    category: "birds",
+    category_name: "Birds & Parrots",
+    price: 2350,
+    original_price: 2600,
+    image: "/src/assets/birds/10003.jpg",
+    sku: "PNP-BIRD-4001",
+    short_desc: "Nutritionally balanced seed and grain blend with eucalyptus leaves.",
+    is_promotional: true,
+    is_featured: true
+  },
+  {
+    id: 9,
+    name: "Crispy Muesli Complete Hamster & Guinea Pig Food",
+    slug: "crispy-muesli-complete-hamster-guinea-pig-food",
+    category: "small-pets",
+    category_name: "Small Pets",
+    price: 1950,
+    original_price: 2100,
+    image: "/src/assets/hamsters/10003.jpg",
+    sku: "PNP-HAM-5001",
+    short_desc: "Tasty fiber-rich muesli mixture with puffed grains and vegetables.",
+    is_promotional: false,
+    is_featured: false
+  }
+];
+
+const categories = [
+  { id: 'all', name: 'All Products' },
+  { id: 'foods', name: 'Pet Foods' },
+  { id: 'medicines', name: 'Medicines & Care' },
+  { id: 'accessories', name: 'Accessories & Toys' },
+  { id: 'birds', name: 'Birds & Parrots' },
+  { id: 'small-pets', name: 'Small Pets' },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shop Online - P&P Pet Shop | Mount Lavinia</title>
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <Navbar />
+
+    <main class="flex-1 max-w-7xl mx-auto px-6 pt-28 pb-20 w-full">
+      <!-- Hero Header -->
+      <div class="bg-gradient-to-r from-[#D9782D] to-[#b86120] rounded-[2.5rem] p-8 md:p-12 text-white mb-10 shadow-sm relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl">
+          <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
+            Official Online Store
+          </span>
+          <h1 class="text-4xl md:text-5xl font-extrabold mb-4">
+            Quality Care & Supplies <br/>for Your Beloved Pets
+          </h1>
+          <p class="text-white/90 text-base md:text-lg">
+            Browse our full range of nutritious pet foods, veterinary care essentials, and premium accessories. Free delivery in Colombo for orders over Rs. 15,000!
+          </p>
+        </div>
+        <div class="absolute -right-10 -bottom-10 opacity-15 text-white pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-96 h-96">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- Category Filters -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none" id="category-filters">
+          {categories.map((c, i) => (
+            <button 
+              class={`cat-filter-btn px-4 py-2 rounded-full text-xs font-bold transition whitespace-nowrap ${i === 0 ? 'bg-[#D9782D] text-white shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              data-category={c.id}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+
+        <!-- Search & Sorting -->
+        <div class="flex items-center gap-3">
+          <div class="relative flex-1 md:w-60">
+            <input 
+              type="text" 
+              id="search-input"
+              placeholder="Search products..." 
+              class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-[#D9782D]"
+            />
+            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+
+          <select 
+            id="sort-select"
+            class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:border-[#D9782D]"
+          >
+            <option value="featured">Featured First</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="name_asc">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product Catalogue Grid -->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {initialProducts.map((p) => (
+          <div 
+            class="product-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col group"
+            data-category={p.category}
+            data-name={p.name.toLowerCase()}
+            data-price={p.price}
+            data-featured={p.is_featured ? '1' : '0'}
+          >
+            <!-- Image & Badges -->
+            <div class="relative aspect-square overflow-hidden bg-gray-50">
+              <img 
+                src={p.image} 
+                alt={p.name} 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+              {p.is_promotional && (
+                <span class="absolute top-3 left-3 bg-[#D9782D] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full shadow-sm">
+                  Special Offer
+                </span>
+              )}
+              <span class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-gray-800 text-[11px] font-bold px-3 py-1 rounded-full shadow-sm">
+                {p.category_name}
+              </span>
+            </div>
+
+            <!-- Content -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+              <div>
+                <a href={`/shop/${p.slug}`} class="block font-bold text-gray-900 text-base leading-snug hover:text-[#D9782D] transition mb-2">
+                  {p.name}
+                </a>
+                <p class="text-xs text-gray-500 line-clamp-2 mb-4">
+                  {p.short_desc}
+                </p>
+              </div>
+
+              <!-- Price & CTA -->
+              <div class="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+                <div>
+                  <span class="text-xs text-gray-400 block font-medium">Price (LKR)</span>
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-lg font-black text-gray-900">
+                      Rs. {p.price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </span>
+                    {p.original_price && (
+                      <span class="text-xs text-gray-400 line-through">
+                        Rs. {p.original_price.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <button 
+                  class="add-to-cart-btn bg-[#00B14F] hover:bg-green-700 text-white p-2.5 rounded-full shadow-sm transition active:scale-95 flex items-center justify-center shrink-0"
+                  data-id={p.id}
+                  data-name={p.name}
+                  data-price={p.price}
+                  data-sku={p.sku}
+                  data-slug={p.slug}
+                  data-image={p.image}
+                  title="Add to cart"
+                  aria-label="Add to cart"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Empty Filter State -->
+      <div id="no-products-msg" class="hidden text-center py-20 bg-white rounded-3xl border border-gray-100 mt-6">
+        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+        </svg>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">No matching pet products found</h3>
+        <p class="text-sm text-gray-500 max-w-sm mx-auto">Try selecting another category or searching for general terms like "dog food" or "leash".</p>
+      </div>
+    </main>
+
+    <!-- Toast Notification for Cart Actions -->
+    <div id="cart-toast" class="fixed bottom-6 right-6 bg-gray-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 transform translate-y-24 transition-transform duration-300 z-50">
+      <div class="bg-green-500 rounded-full p-1 text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div>
+        <span id="toast-title" class="font-bold text-xs block">Added to Cart</span>
+        <span id="toast-msg" class="text-[11px] text-gray-300">Item successfully added to your order.</span>
+      </div>
+      <a href="/cart" class="ml-2 text-xs font-bold text-[#D9782D] hover:underline">View Cart</a>
+    </div>
+
+    <Footer />
+  </body>
+</html>
+
+<script>
+  import { addToCart } from '../../scripts/cart';
+
+  let activeCategory = 'all';
+  let searchQuery = '';
+  let activeSort = 'featured';
+
+  function applyFilters() {
+    const cards = document.querySelectorAll<HTMLElement>('.product-card');
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const cat = card.dataset.category || '';
+      const name = card.dataset.name || '';
+
+      const matchesCat = activeCategory === 'all' || cat === activeCategory;
+      const matchesSearch = searchQuery === '' || name.includes(searchQuery.toLowerCase());
+
+      if (matchesCat && matchesSearch) {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const emptyMsg = document.getElementById('no-products-msg');
+    if (emptyMsg) {
+      emptyMsg.classList.toggle('hidden', visibleCount > 0);
+    }
+  }
+
+  function sortProducts() {
+    const grid = document.getElementById('product-grid');
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('.product-card'));
+
+    cards.sort((a, b) => {
+      const priceA = parseFloat(a.dataset.price || '0');
+      const priceB = parseFloat(b.dataset.price || '0');
+      const nameA = a.dataset.name || '';
+      const nameB = b.dataset.name || '';
+      const featA = a.dataset.featured === '1' ? 1 : 0;
+      const featB = b.dataset.featured === '1' ? 1 : 0;
+
+      if (activeSort === 'price_asc') return priceA - priceB;
+      if (activeSort === 'price_desc') return priceB - priceA;
+      if (activeSort === 'name_asc') return nameA.localeCompare(nameB);
+      return featB - featA; // Default featured first
+    });
+
+    cards.forEach(card => grid.appendChild(card));
+  }
+
+  function showToast(productName: string) {
+    const toast = document.getElementById('cart-toast');
+    const toastMsg = document.getElementById('toast-msg');
+    if (toast && toastMsg) {
+      toastMsg.textContent = `${productName} added to cart.`;
+      toast.classList.remove('translate-y-24');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24');
+      }, 3000);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Category click handler
+    document.querySelectorAll('.cat-filter-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLElement;
+        document.querySelectorAll('.cat-filter-btn').forEach((b) => {
+          b.classList.remove('bg-[#D9782D]', 'text-white', 'shadow-sm');
+          b.classList.add('bg-gray-100', 'text-gray-700');
+        });
+        target.classList.remove('bg-gray-100', 'text-gray-700');
+        target.classList.add('bg-[#D9782D]', 'text-white', 'shadow-sm');
+
+        activeCategory = target.dataset.category || 'all';
+        applyFilters();
+      });
+    });
+
+    // Search input handler
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = (e.target as HTMLInputElement).value.trim();
+        applyFilters();
+      });
+    }
+
+    // Sort handler
+    const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (e) => {
+        activeSort = (e.target as HTMLSelectElement).value;
+        sortProducts();
+      });
+    }
+
+    // Add to cart buttons
+    document.querySelectorAll('.add-to-cart-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = e.currentTarget as HTMLElement;
+        const id = parseInt(target.dataset.id || '0', 10);
+        const name = target.dataset.name || '';
+        const price = parseFloat(target.dataset.price || '0');
+        const sku = target.dataset.sku || '';
+        const slug = target.dataset.slug || '';
+        const image = target.dataset.image || '';
+
+        addToCart({
+          productId: id,
+          name,
+          price,
+          sku,
+          slug,
+          image,
+          quantity: 1
+        });
+
+        showToast(name);
+      });
+    });
+  });
+</script>
+

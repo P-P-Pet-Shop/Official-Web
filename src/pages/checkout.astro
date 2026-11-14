@@ -1,0 +1,343 @@
+---
+import Navbar from '../components/navbar.astro';
+import Footer from '../components/footer.astro';
+import '../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Secure Checkout - P&P Pet Shop</title>
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <Navbar />
+
+    <main class="flex-1 max-w-7xl mx-auto px-6 pt-28 pb-20 w-full">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-8 text-gray-900">
+        Checkout & <span class="text-[#D9782D]">Delivery</span> Details
+      </h1>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Checkout Form (2 Cols) -->
+        <div class="lg:col-span-2">
+          <form id="checkout-form" class="space-y-6">
+            <!-- Customer Information Card -->
+            <div class="bg-white rounded-[2.5rem] p-6 md:p-8 border border-gray-100 shadow-sm space-y-4">
+              <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-full bg-orange-100 text-[#D9782D] text-xs font-black flex items-center justify-center">1</span>
+                Contact Information
+              </h2>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+                    Full Name <span class="text-red-500">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="customer_name" 
+                    id="customer_name" 
+                    required 
+                    placeholder="e.g. Kasun Perera"
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+                    Mobile Number <span class="text-red-500">*</span>
+                  </label>
+                  <input 
+                    type="tel" 
+                    name="customer_phone" 
+                    id="customer_phone" 
+                    required 
+                    placeholder="e.g. 0771234567"
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+                  />
+                  <span class="text-[11px] text-gray-400 mt-0.5 block">Sri Lankan format (e.g. 077XXXXXXX)</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+                  Email Address (Optional)
+                </label>
+                <input 
+                  type="email" 
+                  name="customer_email" 
+                  id="customer_email" 
+                  placeholder="e.g. kasun@gmail.com"
+                  class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+                />
+              </div>
+            </div>
+
+            <!-- Delivery Address Card -->
+            <div class="bg-white rounded-[2.5rem] p-6 md:p-8 border border-gray-100 shadow-sm space-y-4">
+              <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-full bg-orange-100 text-[#D9782D] text-xs font-black flex items-center justify-center">2</span>
+                Delivery Location
+              </h2>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+                    District <span class="text-red-500">*</span>
+                  </label>
+                  <select 
+                    name="delivery_district" 
+                    id="delivery_district" 
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+                  >
+                    <option value="Colombo" selected>Colombo</option>
+                    <option value="Gampaha">Gampaha</option>
+                    <option value="Kalutara">Kalutara</option>
+                    <option value="Kandy">Kandy</option>
+                    <option value="Galle">Galle</option>
+                    <option value="Matara">Matara</option>
+                    <option value="Kurunegala">Kurunegala</option>
+                    <option value="Anuradhapura">Anuradhapura</option>
+                    <option value="Ratnapura">Ratnapura</option>
+                    <option value="Badulla">Badulla</option>
+                    <option value="Other">Other District</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+                    City / Town / Area <span class="text-red-500">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    name="delivery_city" 
+                    id="delivery_city" 
+                    required 
+                    placeholder="e.g. Mount Lavinia, Dehiwala, Nugegoda"
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+                  Street Address & House No. <span class="text-red-500">*</span>
+                </label>
+                <textarea 
+                  name="delivery_address" 
+                  id="delivery_address" 
+                  rows="2" 
+                  required 
+                  placeholder="e.g. No. 45/2, Templers Road"
+                  class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+                  Special Delivery Instructions (Optional)
+                </label>
+                <input 
+                  type="text" 
+                  name="delivery_instructions" 
+                  id="delivery_instructions" 
+                  placeholder="e.g. Please call before arriving or leave with security"
+                  class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+                />
+              </div>
+            </div>
+
+            <!-- Payment Method Card -->
+            <div class="bg-white rounded-[2.5rem] p-6 md:p-8 border border-gray-100 shadow-sm space-y-4">
+              <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-full bg-orange-100 text-[#D9782D] text-xs font-black flex items-center justify-center">3</span>
+                Select Payment Method
+              </h2>
+
+              <div class="space-y-3">
+                <label class="flex items-start gap-4 p-4 rounded-2xl border-2 border-[#D9782D] bg-orange-50/50 cursor-pointer">
+                  <input type="radio" name="payment_method" value="CASH_ON_DELIVERY" checked class="mt-1 text-[#D9782D] focus:ring-[#D9782D]" />
+                  <div>
+                    <span class="font-bold text-sm text-gray-900 block">Cash on Delivery (COD)</span>
+                    <span class="text-xs text-gray-500">Pay cash upon safe delivery to your doorstep anywhere in Sri Lanka.</span>
+                  </div>
+                </label>
+
+                <label class="flex items-start gap-4 p-4 rounded-2xl border border-gray-200 hover:border-gray-300 cursor-pointer">
+                  <input type="radio" name="payment_method" value="BANK_TRANSFER" class="mt-1 text-[#D9782D] focus:ring-[#D9782D]" />
+                  <div>
+                    <span class="font-bold text-sm text-gray-900 block">Direct Bank Transfer</span>
+                    <span class="text-xs text-gray-500">Transfer directly to our Commercial Bank / HNB account. We will contact you for slip verification.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="checkout-error" class="hidden bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm font-medium"></div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              id="submit-order-btn"
+              class="w-full bg-[#00B14F] hover:bg-green-700 text-white font-black text-lg py-5 rounded-2xl transition shadow-md active:scale-98 flex items-center justify-center gap-3"
+            >
+              <span>Place Order</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Sidebar Summary (1 Col) -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-[2.5rem] p-6 md:p-8 border border-gray-100 shadow-sm space-y-5">
+            <h2 class="text-xl font-extrabold text-gray-900 border-b border-gray-100 pb-4">
+              Your Order Items
+            </h2>
+
+            <div id="checkout-items-list" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="border-t border-gray-100 pt-4 space-y-2.5 text-sm">
+              <div class="flex justify-between text-gray-600">
+                <span>Items Subtotal:</span>
+                <span id="co-subtotal" class="font-bold text-gray-900">Rs. 0.00</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Delivery Charge:</span>
+                <span id="co-delivery" class="font-bold text-green-700">Rs. 350.00</span>
+              </div>
+              <div class="border-t border-gray-100 pt-3 flex justify-between items-baseline">
+                <span class="text-base font-bold text-gray-900">Final Total:</span>
+                <span id="co-total" class="text-2xl font-black text-[#D9782D]">Rs. 0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<script>
+  import { getCart, clearCart } from '../scripts/cart';
+  import { apiRequest } from '../scripts/api';
+
+  async function initCheckout() {
+    const cart = getCart();
+    if (cart.length === 0) {
+      window.location.href = '/shop';
+      return;
+    }
+
+    const itemsList = document.getElementById('checkout-items-list');
+    const districtSelect = document.getElementById('delivery_district') as HTMLSelectElement;
+
+    async function recalculate() {
+      const selectedDistrict = districtSelect?.value || 'Colombo';
+      const validationRes = await apiRequest('/cart/validate', {
+        method: 'POST',
+        body: JSON.stringify({
+          items: cart.map(item => ({
+            product_id: item.productId,
+            variant_id: item.variantId,
+            quantity: item.quantity
+          })),
+          district: selectedDistrict
+        })
+      });
+
+      const data = validationRes.data || {};
+      const subtotal = data.subtotal ?? cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+      const delivery = data.delivery_fee ?? 350;
+      const total = data.total ?? (subtotal + delivery);
+
+      const subtotalEl = document.getElementById('co-subtotal');
+      const deliveryEl = document.getElementById('co-delivery');
+      const totalEl = document.getElementById('co-total');
+
+      if (subtotalEl) subtotalEl.textContent = `Rs. ${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      if (deliveryEl) deliveryEl.textContent = delivery === 0 ? 'FREE' : `Rs. ${delivery.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      if (totalEl) totalEl.textContent = `Rs. ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+
+      if (itemsList) {
+        itemsList.innerHTML = (data.items || cart).map((item: any) => `
+          <div class="flex items-center justify-between text-xs py-1 border-b border-gray-50 last:border-none">
+            <div class="flex-1 pr-2">
+              <span class="font-bold text-gray-900 block">${item.product_name || item.name}</span>
+              ${item.variant_name ? `<span class="text-gray-400 block">${item.variant_name}</span>` : ''}
+              <span class="text-gray-500">Qty: ${item.quantity}</span>
+            </div>
+            <div class="font-bold text-gray-900">
+              Rs. ${(item.subtotal || item.price * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    districtSelect?.addEventListener('change', recalculate);
+    recalculate();
+
+    // Form Submission
+    const form = document.getElementById('checkout-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('submit-order-btn') as HTMLButtonElement;
+    const errorBanner = document.getElementById('checkout-error');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (errorBanner) errorBanner.classList.add('hidden');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Processing Order Securely...</span>';
+      }
+
+      const formData = new FormData(form);
+      const payload = {
+        customer_name: formData.get('customer_name'),
+        customer_phone: formData.get('customer_phone'),
+        customer_email: formData.get('customer_email'),
+        delivery_district: formData.get('delivery_district'),
+        delivery_city: formData.get('delivery_city'),
+        delivery_address: formData.get('delivery_address'),
+        delivery_instructions: formData.get('delivery_instructions'),
+        payment_method: formData.get('payment_method'),
+        items: cart.map(item => ({
+          product_id: item.productId,
+          variant_id: item.variantId,
+          quantity: item.quantity
+        }))
+      };
+
+      const res = await apiRequest('/checkout', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+
+      if (res.success && res.data) {
+        clearCart();
+        const orderNumber = res.data.order_number;
+        const token = res.data.tracking_token;
+        window.location.href = `/order-confirmation?order=${encodeURIComponent(orderNumber)}&token=${encodeURIComponent(token)}`;
+      } else {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Place Order</span><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
+        }
+        if (errorBanner) {
+          const errMsg = res.message || (res.errors ? Object.values(res.errors).join(', ') : 'Order creation failed.');
+          errorBanner.textContent = errMsg;
+          errorBanner.classList.remove('hidden');
+          errorBanner.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initCheckout);
+</script>
+

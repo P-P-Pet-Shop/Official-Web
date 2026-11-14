@@ -7,16 +7,16 @@ const currentPath = pathname.replace(/\/$/, "") || "/";
 
 const navLinks = [
   { name: 'Home', href: '/' },
+  { name: 'Shop', href: '/shop' },
   { name: 'About', href: '/about' },
   { name: 'Gallery', href: '/gallery' },
   { name: 'Services', href: '/services' },
+  { name: 'Track Order', href: '/tracking' },
   { name: 'Contact', href: '/contact' },
 ];
 ---
 
-<!-- Updated: Changed 'absolute' to 'fixed' to keep navbar visible while scrolling -->
 <header class="fixed top-0 left-0 w-full z-50 p-4 md:p-6">
-  
   <nav class="bg-white rounded-full max-w-7xl mx-auto px-6 py-2.5 flex items-center justify-between shadow-md">
     
     <a href="/" class="flex items-center gap-3 group shrink-0">
@@ -28,12 +28,12 @@ const navLinks = [
     </a>
 
     <div class="hidden lg:flex items-center justify-center flex-1">
-      <ul class="flex items-center gap-7 text-[15px] font-semibold text-black">
+      <ul class="flex items-center gap-6 text-[15px] font-semibold text-black">
         {navLinks.map((link) => (
           <li>
             <a 
               href={link.href} 
-              class={`transition-colors duration-200 hover:text-gray-500 ${currentPath === link.href ? "text-gray-900" : ""}`}
+              class={`transition-colors duration-200 hover:text-[#D9782D] ${currentPath === link.href ? "text-[#D9782D] font-bold" : ""}`}
             >
               {link.name}
             </a>
@@ -42,45 +42,82 @@ const navLinks = [
       </ul>
     </div>
 
-    <div class="hidden lg:flex items-center gap-3 shrink-0">
-      <a href="#" class="bg-[#00B14F] text-white text-sm font-bold px-6 py-2.5 rounded-full hover:bg-green-700 transition shadow-sm">
-        Uber Eats
+    <div class="flex items-center gap-3 shrink-0">
+      <!-- Cart Indicator -->
+      <a 
+        href="/cart" 
+        class="relative flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 transition"
+        aria-label="View Shopping Cart"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+        </svg>
+        <span id="nav-cart-badge" class="absolute -top-1 -right-1 bg-[#D9782D] text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+          0
+        </span>
       </a>
-      <a href="#" class="bg-[#FFC107] text-black text-sm font-bold px-6 py-2.5 rounded-full hover:bg-yellow-500 transition shadow-sm">
-        PickMe Food
-      </a>
-    </div>
 
-    <button id="menu-btn" class="lg:hidden p-2 text-black focus:outline-none" aria-label="Toggle Menu">
-      <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-      </svg>
-    </button>
+      <!-- Quick Delivery Links -->
+      <div class="hidden xl:flex items-center gap-2">
+        <a href="https://www.ubereats.com" target="_blank" rel="noopener noreferrer" class="bg-[#00B14F] text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-green-700 transition shadow-sm">
+          Uber Eats
+        </a>
+        <a href="https://pickme.lk/food" target="_blank" rel="noopener noreferrer" class="bg-[#FFC107] text-black text-xs font-bold px-4 py-2 rounded-full hover:bg-yellow-500 transition shadow-sm">
+          PickMe Food
+        </a>
+      </div>
+
+      <button id="menu-btn" class="lg:hidden p-2 text-black focus:outline-none" aria-label="Toggle Menu">
+        <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
   </nav>
 
-  <div id="mobile-menu" class="hidden lg:hidden flex-col bg-white rounded-3xl mt-3 p-5 space-y-4 max-w-7xl mx-auto shadow-lg">
+  <div id="mobile-menu" class="hidden lg:hidden flex-col bg-white rounded-3xl mt-3 p-5 space-y-3 max-w-7xl mx-auto shadow-lg">
     {navLinks.map((link) => (
       <a 
         href={link.href} 
-        class="text-lg font-bold px-4 text-black hover:text-gray-600"
+        class="text-base font-bold px-4 py-1 text-black hover:text-[#D9782D]"
       >
         {link.name}
       </a>
     ))}
     
-    <div class="flex flex-col gap-3 px-4 pt-4 border-t border-gray-100">
-      <a href="#" class="bg-[#00B14F] text-white text-center py-3 rounded-full font-bold">
-        Uber Eats
+    <div class="flex flex-col gap-2 px-4 pt-3 border-t border-gray-100">
+      <a href="/cart" class="bg-[#D9782D] text-white text-center py-2.5 rounded-full font-bold text-sm">
+        View Cart
       </a>
-      <a href="#" class="bg-[#FFC107] text-black text-center py-3 rounded-full font-bold">
-        PickMe Food
-      </a>
+      <div class="flex gap-2">
+        <a href="https://www.ubereats.com" target="_blank" rel="noopener noreferrer" class="flex-1 bg-[#00B14F] text-white text-center py-2 rounded-full font-bold text-xs">
+          Uber Eats
+        </a>
+        <a href="https://pickme.lk/food" target="_blank" rel="noopener noreferrer" class="flex-1 bg-[#FFC107] text-black text-center py-2 rounded-full font-bold text-xs">
+          PickMe Food
+        </a>
+      </div>
     </div>
   </div>
 </header>
 
 <script>
+  import { getCartTotalCount } from '../scripts/cart';
+
+  function updateBadge() {
+    const badge = document.getElementById('nav-cart-badge');
+    if (badge) {
+      const count = getCartTotalCount();
+      badge.textContent = String(count);
+      badge.style.display = count > 0 ? 'flex' : 'none';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', updateBadge);
+  window.addEventListener('cart-updated', updateBadge);
   document.addEventListener('astro:page-load', () => {
+    updateBadge();
+
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = document.getElementById('menu-icon');
@@ -88,7 +125,6 @@ const navLinks = [
     if (menuBtn) {
       menuBtn.addEventListener('click', () => {
         const isHidden = mobileMenu?.classList.contains('hidden');
-        
         mobileMenu?.classList.toggle('hidden');
         mobileMenu?.classList.toggle('flex');
         

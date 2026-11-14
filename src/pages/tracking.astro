@@ -1,0 +1,245 @@
+---
+import Navbar from '../components/navbar.astro';
+import Footer from '../components/footer.astro';
+import '../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Track Order - P&P Pet Shop</title>
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <Navbar />
+
+    <main class="flex-1 max-w-4xl mx-auto px-6 pt-28 pb-20 w-full">
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
+          Track Your <span class="text-[#D9782D]">Pet Order</span>
+        </h1>
+        <p class="text-sm text-gray-500">
+          Enter your order number and mobile number to see real-time preparation and delivery updates.
+        </p>
+      </div>
+
+      <!-- Search Box Card -->
+      <div class="bg-white rounded-[2.5rem] p-6 md:p-8 shadow-sm border border-gray-100 mb-8">
+        <form id="track-form" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+              Order Number
+            </label>
+            <input 
+              type="text" 
+              id="track-order-num-input" 
+              placeholder="e.g. PNP-20261113-A78K"
+              required
+              class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1">
+              Mobile Number
+            </label>
+            <input 
+              type="tel" 
+              id="track-phone-input" 
+              placeholder="e.g. 0771234567"
+              class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D9782D]"
+            />
+          </div>
+
+          <div class="flex items-end">
+            <button 
+              type="submit" 
+              class="w-full bg-[#D9782D] hover:bg-[#b86120] text-white font-bold py-3 px-6 rounded-xl transition shadow-sm"
+            >
+              Check Status
+            </button>
+          </div>
+        </form>
+
+        <div id="track-error" class="hidden mt-4 text-xs font-semibold text-red-600 bg-red-50 p-3 rounded-xl border border-red-100"></div>
+      </div>
+
+      <!-- Results View -->
+      <div id="track-results" class="hidden space-y-6">
+        <!-- Status Card with Stepper -->
+        <div class="bg-white rounded-[2.5rem] p-6 md:p-10 shadow-sm border border-gray-100 space-y-8">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-6">
+            <div>
+              <span class="text-xs text-gray-400 font-medium block">Order Details</span>
+              <h2 id="res-order-num" class="text-2xl font-black text-gray-900 font-mono"></h2>
+              <span id="res-date" class="text-xs text-gray-500"></span>
+            </div>
+            <div class="sm:text-right">
+              <span class="text-xs text-gray-400 font-medium block">Current Status</span>
+              <span id="res-status-badge" class="inline-block bg-orange-100 text-[#D9782D] text-xs font-black uppercase px-4 py-1.5 rounded-full mt-1">
+                PENDING
+              </span>
+            </div>
+          </div>
+
+          <!-- Stepper -->
+          <div class="relative py-4">
+            <div class="grid grid-cols-4 gap-2 text-center text-xs">
+              <div class="step-col space-y-2" data-step="1">
+                <div class="step-circle w-10 h-10 mx-auto rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center transition">1</div>
+                <span class="step-label font-bold text-gray-500 block text-[11px] sm:text-xs">Order Placed</span>
+              </div>
+              <div class="step-col space-y-2" data-step="2">
+                <div class="step-circle w-10 h-10 mx-auto rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center transition">2</div>
+                <span class="step-label font-bold text-gray-500 block text-[11px] sm:text-xs">Confirmed</span>
+              </div>
+              <div class="step-col space-y-2" data-step="3">
+                <div class="step-circle w-10 h-10 mx-auto rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center transition">3</div>
+                <span class="step-label font-bold text-gray-500 block text-[11px] sm:text-xs">Preparing</span>
+              </div>
+              <div class="step-col space-y-2" data-step="4">
+                <div class="step-circle w-10 h-10 mx-auto rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center transition">4</div>
+                <span class="step-label font-bold text-gray-500 block text-[11px] sm:text-xs">Out / Ready</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Items Table -->
+          <div>
+            <h3 class="font-bold text-sm text-gray-900 mb-3">Order Items</h3>
+            <div id="res-items" class="space-y-2 border border-gray-100 rounded-2xl p-4 bg-gray-50"></div>
+          </div>
+
+          <!-- Timeline -->
+          <div>
+            <h3 class="font-bold text-sm text-gray-900 mb-3">Activity Log</h3>
+            <div id="res-timeline" class="space-y-3 pl-2 border-l-2 border-orange-200"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<script>
+  import { apiRequest } from '../scripts/api';
+
+  async function performLookup(orderNumber: string, phone: string = '', token: string = '') {
+    const errorBox = document.getElementById('track-error');
+    const resultsBox = document.getElementById('track-results');
+    if (errorBox) errorBox.classList.add('hidden');
+
+    let endpoint = `/orders/${encodeURIComponent(orderNumber)}/tracking?`;
+    if (token) endpoint += `token=${encodeURIComponent(token)}`;
+    if (phone) endpoint += `&phone=${encodeURIComponent(phone)}`;
+
+    const res = await apiRequest(endpoint);
+
+    if (res.success && res.data) {
+      if (resultsBox) resultsBox.classList.remove('hidden');
+      renderOrderData(res.data);
+    } else {
+      if (resultsBox) resultsBox.classList.add('hidden');
+      if (errorBox) {
+        errorBox.textContent = res.message || 'Unable to locate order. Please check order number or mobile number.';
+        errorBox.classList.remove('hidden');
+      }
+    }
+  }
+
+  function renderOrderData(data: any) {
+    const numEl = document.getElementById('res-order-num');
+    const dateEl = document.getElementById('res-date');
+    const badgeEl = document.getElementById('res-status-badge');
+    const itemsEl = document.getElementById('res-items');
+    const timelineEl = document.getElementById('res-timeline');
+
+    if (numEl) numEl.textContent = data.order_number;
+    if (dateEl) dateEl.textContent = `Placed on ${data.created_at} | Destination: ${data.delivery_city}, ${data.delivery_district}`;
+    if (badgeEl) badgeEl.textContent = data.website_order_status;
+
+    // Highlight Stepper
+    const statusMap: Record<string, number> = {
+      'PENDING': 1,
+      'VALIDATING': 1,
+      'CONFIRMED': 2,
+      'PREPARING': 3,
+      'READY_FOR_PICKUP': 4,
+      'PICKED_UP': 4,
+      'DELIVERED': 4,
+    };
+    const currentStep = statusMap[data.website_order_status] || 1;
+
+    document.querySelectorAll('.step-col').forEach(col => {
+      const step = parseInt((col as HTMLElement).dataset.step || '1', 10);
+      const circle = col.querySelector('.step-circle');
+      const label = col.querySelector('.step-label');
+
+      if (step <= currentStep) {
+        circle?.classList.remove('bg-gray-100', 'text-gray-500');
+        circle?.classList.add('bg-[#D9782D]', 'text-white', 'shadow-sm');
+        label?.classList.add('text-[#D9782D]');
+      } else {
+        circle?.classList.add('bg-gray-100', 'text-gray-500');
+        circle?.classList.remove('bg-[#D9782D]', 'text-white');
+        label?.classList.remove('text-[#D9782D]');
+      }
+    });
+
+    // Items
+    if (itemsEl) {
+      itemsEl.innerHTML = data.items.map((i: any) => `
+        <div class="flex justify-between items-center text-xs py-1 border-b border-gray-100 last:border-none">
+          <div>
+            <span class="font-bold text-gray-900">${i.product_name}</span>
+            ${i.variant_name ? `<span class="text-gray-500"> (${i.variant_name})</span>` : ''}
+            <span class="text-gray-400 block font-mono">Qty: ${i.quantity}</span>
+          </div>
+          <div class="font-black text-gray-900">${i.subtotal_formatted}</div>
+        </div>
+      `).join('') + `
+        <div class="pt-3 border-t border-gray-200 flex justify-between items-baseline text-xs font-bold text-gray-800">
+          <span>Total:</span>
+          <span class="text-base font-black text-[#D9782D]">${data.total_amount_formatted} (${data.payment_method})</span>
+        </div>
+      `;
+    }
+
+    // Timeline
+    if (timelineEl) {
+      timelineEl.innerHTML = data.timeline.map((ev: any) => `
+        <div class="relative pl-4 text-xs space-y-0.5">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#D9782D] absolute -left-[7px] top-1"></div>
+          <span class="font-bold text-gray-900 block">${ev.status}</span>
+          <span class="text-gray-500 block">${ev.description}</span>
+          <span class="text-[10px] text-gray-400">${ev.created_at}</span>
+        </div>
+      `).join('');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const orderFromUrl = params.get('order');
+    const tokenFromUrl = params.get('token');
+
+    if (orderFromUrl) {
+      const input = document.getElementById('track-order-num-input') as HTMLInputElement;
+      if (input) input.value = orderFromUrl;
+      performLookup(orderFromUrl, '', tokenFromUrl || '');
+    }
+
+    const form = document.getElementById('track-form') as HTMLFormElement;
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const orderNum = (document.getElementById('track-order-num-input') as HTMLInputElement).value.trim();
+      const phone = (document.getElementById('track-phone-input') as HTMLInputElement).value.trim();
+      if (orderNum) {
+        performLookup(orderNum, phone, tokenFromUrl || '');
+      }
+    });
+  });
+</script>
+

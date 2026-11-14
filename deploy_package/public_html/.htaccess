@@ -1,0 +1,75 @@
+# ==============================================================================
+# P and P Pet Shop - Production cPanel Webroot Configuration (.htaccess)
+# Dual Stack: Static Astro.js Frontend + PHP 8.3 REST API
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. Force HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP_HOST} ^(www\.)?pandppetshop\.lk$ [NC]
+    RewriteRule ^(.*)$ https://pandppetshop.lk/$1 [R=301,L]
+
+    # 2. Route API Requests to PHP Backend
+    # Checks for backend located either parallel to public_html or inside
+    RewriteCond %{REQUEST_URI} ^/api/v1/ [NC]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^api/v1/(.*)$ api/index.php [QSA,L]
+
+    # 3. Clean URLs for Astro Static HTML pages
+    # Check if a folder/index.html exists for the clean URL
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+    RewriteRule ^(.*)$ $1/index.html [L]
+
+    # Check if a direct .html file exists
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+    RewriteRule ^(.*)$ $1.html [L]
+</IfModule>
+
+# Custom 404 Error Document
+ErrorDocument 404 /404.html
+
+# ==============================================================================
+# Security & Protection Rules
+# ==============================================================================
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+# Block access to sensitive configuration files & directories
+<FilesMatch "^\.|\.env|composer\.(json|lock)|package(-lock)?\.json|\.log$|\.sql$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header unset X-Powered-By
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ==============================================================================
+# Performance: Gzip Compression & Browser Caching
+# ==============================================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>

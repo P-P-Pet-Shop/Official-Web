@@ -1,0 +1,123 @@
+---
+import Navbar from '../components/navbar.astro';
+import Footer from '../components/footer.astro';
+import '../styles/global.css';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order Confirmed - P&P Pet Shop</title>
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900 min-h-screen flex flex-col">
+    <Navbar />
+
+    <main class="flex-1 max-w-4xl mx-auto px-6 pt-28 pb-20 w-full">
+      <div class="bg-white rounded-[2.5rem] p-8 md:p-14 shadow-sm border border-gray-100 text-center space-y-6">
+        <!-- Success Icon -->
+        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#D9782D]">Thank You for Your Order</span>
+          <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-1">
+            Order Placed Successfully!
+          </h1>
+          <p class="text-gray-500 text-sm max-w-md mx-auto mt-2">
+            We have received your order and our team at Mount Lavinia is already preparing it for prompt delivery.
+          </p>
+        </div>
+
+        <!-- Order Summary Card -->
+        <div class="bg-gray-50 rounded-2xl p-6 text-left space-y-4 border border-gray-100 max-w-lg mx-auto text-sm">
+          <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+            <span class="text-gray-500">Order Number:</span>
+            <span id="conf-order-num" class="font-mono font-black text-gray-900 text-base">Loading...</span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500">Order Status:</span>
+            <span id="conf-order-status" class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">
+              CONFIRMED
+            </span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500">Payment Method:</span>
+            <span id="conf-payment-method" class="font-bold text-gray-800">Cash on Delivery</span>
+          </div>
+
+          <div class="flex justify-between items-center border-t border-gray-200 pt-3">
+            <span class="font-bold text-gray-900">Total Amount:</span>
+            <span id="conf-total" class="font-black text-xl text-[#D9782D]">Rs. 0.00</span>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a 
+            id="track-order-link" 
+            href="/tracking" 
+            class="w-full sm:w-auto bg-[#D9782D] hover:bg-[#b86120] text-white font-bold px-8 py-3.5 rounded-full transition shadow-sm"
+          >
+            Track Your Order
+          </a>
+          <a 
+            href="/shop" 
+            class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold px-8 py-3.5 rounded-full transition"
+          >
+            Continue Shopping
+          </a>
+        </div>
+
+        <p class="text-xs text-gray-400 pt-4">
+          Have questions regarding your order? Call our store hotline directly at 
+          <a href="tel:+94112712345" class="text-gray-800 font-bold underline">+94 11 271 2345</a>.
+        </p>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<script>
+  import { apiRequest } from '../scripts/api';
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const params = new URLSearchParams(window.location.search);
+    const orderNumber = params.get('order');
+    const token = params.get('token');
+
+    const orderNumEl = document.getElementById('conf-order-num');
+    const trackLink = document.getElementById('track-order-link') as HTMLAnchorElement;
+
+    if (orderNumber) {
+      if (orderNumEl) orderNumEl.textContent = orderNumber;
+      if (trackLink) {
+        trackLink.href = `/tracking?order=${encodeURIComponent(orderNumber)}${token ? `&token=${encodeURIComponent(token)}` : ''}`;
+      }
+
+      // Fetch tracking info to display live totals
+      if (token) {
+        const res = await apiRequest(`/orders/${encodeURIComponent(orderNumber)}/tracking?token=${encodeURIComponent(token)}`);
+        if (res.success && res.data) {
+          const totalEl = document.getElementById('conf-total');
+          const statusEl = document.getElementById('conf-order-status');
+          const methodEl = document.getElementById('conf-payment-method');
+
+          if (totalEl) totalEl.textContent = res.data.total_amount_formatted;
+          if (statusEl) statusEl.textContent = res.data.website_order_status;
+          if (methodEl) methodEl.textContent = res.data.payment_method.replace(/_/g, ' ');
+        }
+      }
+    } else {
+      if (orderNumEl) orderNumEl.textContent = 'PNP-ORDER-PENDING';
+    }
+  });
+</script>
+
